@@ -1,0 +1,17 @@
+﻿{
+  "profiles": {
+    "MinioWebClient": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:8089",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MINIO_URI": "http://127.0.0.1:9000",
+        "MINIO_BUCKET": "minio-web-client",
+        "MINIO_ACCESS_KEY": "minioadmin",
+        "MINIO_SECRET_KEY": "minioadmin" 
+      }
+    }
+  }
+}

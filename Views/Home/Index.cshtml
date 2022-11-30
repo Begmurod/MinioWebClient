@@ -1,0 +1,66 @@
+﻿@model FileListViewModel
+
+@{
+    ViewData["Title"] = "Список файлов";
+}
+
+@functions
+{
+    static string FormatFileSize(long size)
+    {
+        const int @base = 1000;
+        var units = new[] { "B", "KB", "MB", "GB", "TB" };
+        var scale = (int)Math.Log(size, @base);
+        var unit = units[scale];
+
+        return $"{size / (decimal)Math.Pow(@base, scale):N1} {unit}";
+    }
+}
+
+
+<div class="card p-2 mb-2">
+    @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <dl>
+            <dt>
+                <label for="FileUpload_FormFile">Файл</label>
+            </dt>
+            <dd>
+                <input
+                    id="FileUpload_FormFile" type="file" name="File" required
+                    oninvalid="this.setCustomValidity('Выберите файл')"
+                    oninput="this.setCustomValidity('')"/>
+            </dd>
+        </dl>
+
+        <input class="btn btn-primary" type="submit" value="Загрузить"/>
+    }
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Имя файла</th>
+        <th>Размер</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (!Model.Files.Any())
+    {
+        <tr>
+            <td colspan="3">Загруженные файлы отсутствуют</td>
+        </tr>
+    }
+    @foreach (var file in Model.Files)
+    {
+        <tr>
+            <td>@file.Name</td>
+            <td>@FormatFileSize(file.Size)</td>
+            <td>
+                <a href="@Url.Action("Download", new { key = file.Key })" download>Скачать</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
